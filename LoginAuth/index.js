@@ -3,10 +3,19 @@ const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
 const mongoose = require("mongoose");
-//const userRoute = require('./Router/useroute')
+const userRoute = require("./Router/useroute");
+const cors = require("cors");
+const cookieParser = require('cookie-parser')
 
-app.use(express.json())
-//app.use('/api',userRoute);
+app.use(express.json());
+app.use(cookieParser())
+app.use(cors({
+  origin: ['http://localhost:3000'],
+  credentials:true
+  
+}))
+
+app.use("/api", userRoute);
 
 //Connecting to MongoDB database
 mongoose
@@ -16,8 +25,8 @@ mongoose
   })
   .catch((err) => console.log(err));
 
-  //Server listening 
+//Server listening
 
-  app.listen(process.env.PORT || 8000, ()=>{
-    console.log('Server is running')
-  })
+app.listen(process.env.PORT || 8000, () => {
+  console.log("Server is running");
+});
